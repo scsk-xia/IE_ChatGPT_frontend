@@ -1,0 +1,198 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Frontend Resources.
+
+Metadata:
+  'AWS::CloudFormation::Interface':
+    ParameterGroups:
+      - Label:
+          default: 'Env Configuration'
+        Parameters:
+          - envPrefix
+          - customDomainName
+          - hostedZoneId
+          - distributionPriceClass
+          - webAclId
+
+    ParameterLabels:
+      envPrefix:
+        default: "Environment Prefix (ex: sampleapp-dev)"
+      customDomainName:
+        default: "Web Site Domain Name (ex: sampleapp.insightedge.tech)"
+      hostedZoneId:
+        default: "Route 53 Hosted Zone ID. Leave blank if you don't edit DNS records."
+      distributionPriceClass:
+        default: "CloudFront Price Class. 100: Only North America, Europe. 200: North America, Europe, Japan, Asia, Africa."
+      webAclId:
+        default: "WAF Web ACL ID. Leave blank if you don't associate Web ACL."
+      
+
+# スタック作成時の入力パラメタ
+Parameters:
+  # スタック間でリソース名を一意にするための、環境を表すPrefix
+  # アプリ名-ステージ名 の形式を推奨
+  envPrefix:
+    Type: String
+    Default: sampleapp-dev
+  
+  # アプリをデプロイするURLのカスタムドメイン名
+  customDomainName:
+    Type: String
+    Default: sampleapp.insightedge.tech
+  
+  # カスタムドメインのDNSレコードを管理するホストゾーン
+  hostedZoneId:
+    Type: String
+    Default: Z00236321N0PTRCWXL7T6
+  
+  # CloudFrontの価格クラス
+  # 最安はPriceClass_100だが日本が含まれないため、
+  # 日本からのアクセスに対してレスポンス性能を向上させるためにはPriceClass_200を推奨
+  # 
+  # 価格クラスごとのカバー対象地域
+  # https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/PriceClass.html
+  # https://aws.amazon.com/jp/cloudfront/pricing/
+  distributionPriceClass:
+    Type: String
+    Default: PriceClass_100
+    AllowedValues:
+      - PriceClass_100
+      - PriceClass_200
+      - PriceClass_All
+
+  # WAFを設定する場合には、グローバルリージョンのWAFを指定する。
+  webAclId:
+    Type: String
+
+Conditions:
+  hasCustomDomainName: !Not [!Equals [!Ref customDomainName, '']]
+  hasHostedZoneId: !Not [!Equals [!Ref hostedZoneId, '']]
+  hasWebAclId: !Not [!Equals [!Ref webAclId, '']]
+
+Resources:
+  # WebサイトのコンテンツをホストするS3バケット
+  appWebContentsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${envPrefix}-webcontents'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  # CloudFront→S3バケットのアクセス許可を設定するためのOAI
+  appCloudFrontOriginAccessIdentity:
+    DependsOn: appWebContentsBucket
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub '${envPrefix}-identity-webcontents'
+
+  # CloudFront→S3バケットのアクセス許可設定バケットポリシー
+  appWebContentsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    DependsOn: appCloudFrontOriginAccessIdentity
+    Properties:
+      Bucket: !Ref appWebContentsBucket
+      PolicyDocument:
+        Statement:
+          - Action: 's3:GetObject'
+            Effect: Allow
+            Resource: !Sub 'arn:aws:s3:::${envPrefix}-webcontents/*'
+            Principal:
+              AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${appCloudFrontOriginAccessIdentity}'
+
+  # カスタムドメインに対応するサーバ証明書
+  acmCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Condition: hasCustomDomainName
+    Properties:
+      DomainName: !Sub '${customDomainName}'
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !Sub '${customDomainName}'
+          HostedZoneId: !Ref hostedZoneId
+
+  # CloudFrontディストリビューション
+  appDistribution:
+    Type: AWS::CloudFront::Distribution
+    DependsOn: appCloudFrontOriginAccessIdentity
+    Properties:
+      DistributionConfig:
+        Comment: !Sub '${envPrefix} environment'
+        Enabled: true
+        DefaultRootObject: index.html
+        Origins:
+          - Id: !Sub 's3-webcontents-origin'
+            DomainName: !GetAtt appWebContentsBucket.RegionalDomainName
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${appCloudFrontOriginAccessIdentity}'
+
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          TargetOriginId: 's3-webcontents-origin'
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: https-only
+          # BASIC認証などをする場合には、CloudFront Functionsを利用する。
+          # FunctionAssociations:
+          #   - EventType: viewer-request
+          #     FunctionARN: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:function/cloudfront-basic-auth'
+        HttpVersion: http2
+        PriceClass: !Ref distributionPriceClass
+        CustomErrorResponses:
+          # SPAでルーティングしたURLに直接アクセスした場合に、index.htmlを返すようにする。
+          - ErrorCode: '403'
+            ResponsePagePath: "/index.html"
+            ResponseCode: '200'
+            ErrorCachingMinTTL: '0'
+        Aliases: !If [hasCustomDomainName, [!Ref customDomainName], !Ref 'AWS::NoValue']
+        ViewerCertificate: !If
+          - hasCustomDomainName
+          - AcmCertificateArn: !Ref acmCertificate
+            SslSupportMethod: sni-only
+          - Ref: AWS::NoValue
+        WebACLId: !If [hasWebAclId, !Ref webAclId, !Ref 'AWS::NoValue']
+
+  # カスタムドメイン→CloudFrontディストリビューションのDNSレコード
+  dnsRecordSet:
+    Type: AWS::Route53::RecordSet
+    Condition: hasHostedZoneId
+    Properties:
+      HostedZoneId: !Ref hostedZoneId
+      Name: !Sub '${customDomainName}'
+      Type: A
+      AliasTarget:
+        HostedZoneId: Z2FDTNDATAQYW2  # CloudFrontのホストゾーンID 固定値
+        DNSName: !GetAtt appDistribution.DomainName
+
+# このスタックをデプロイした後に見たくなる値を出力することで、
+# 各リソースごとのページに遷移しなくてもCloudFormationの画面から一覧できるようにしておく。
+# また、Export名を設定すれば、他のスタックからImportして利用することも可能。
+Outputs:
+  # CloudFrontのランダム文字列ドメイン名
+  defaultDistributionDomainName:
+    Value: !GetAtt appDistribution.DomainName
+
+  # S3バケットにWebコンテンツファイルをアップロードするためのコマンド（Reactを想定し、buildフォルダの内容をデプロイする）
+  # デプロイ後、CloudFrontのキャッシュ対策のために、index.htmlのキャッシュ設定を無効化している。
+  s3SyncCommand:
+    Value: !Sub 'aws s3 sync ./out s3://${envPrefix}-webcontents --delete && aws s3api copy-object --bucket ${envPrefix}-webcontents --key index.html --copy-source ${envPrefix}-webcontents/index.html --content-type "text/html" --cache-control "no-cache, no-store" --metadata-directive REPLACE '
+
+  # CloudFrontのキャッシュを無効化するためのコマンド
+  cfCacheClearCommand:
+    Value: !Join ['', ['aws cloudfront create-invalidation --distribution-id ', !Ref appDistribution, ' --paths "/*" ']]
+
+  # S3バケットを空にするためのコマンド（S3バケットを削除する前に実行する必要あり。）
+  s3ClearCommand:
+    Value: !Sub 'aws s3 rm s3://${envPrefix}-webcontents --recursive'

@@ -1,0 +1,4 @@
+resource_group_name  = "dev-iechatgpt"
+storage_account_name = "deviechatgpttfstate"
+container_name       = "dev-state"
+key                  = "frontend.terraform.tfstate"

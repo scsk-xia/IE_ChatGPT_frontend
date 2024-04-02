@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 400">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#_名称未設定グラデーション);
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: url(#_名称未設定グラデーション_2);
+      }
+
+      .cls-3 {
+        fill: url(#_名称未設定グラデーション_4);
+      }
+
+      .cls-4 {
+        fill: url(#_名称未設定グラデーション_3);
+      }
+    </style>
+    <linearGradient id="_名称未設定グラデーション" data-name="名称未設定グラデーション" x1="180" y1="340" x2="400" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00ffd2"/>
+      <stop offset=".5" stop-color="#00a3c8"/>
+      <stop offset="1" stop-color="#0070a3"/>
+    </linearGradient>
+    <linearGradient id="_名称未設定グラデーション_2" data-name="名称未設定グラデーション 2" x1="31806.3" y1="-44.44" x2="31586.3" y2="-44.44" gradientTransform="translate(32206.29 415.56) rotate(-180)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00dcc8"/>
+      <stop offset=".36" stop-color="#1ea3d0"/>
+      <stop offset="1" stop-color="#c8dcf0"/>
+    </linearGradient>
+    <linearGradient id="_名称未設定グラデーション_3" data-name="名称未設定グラデーション 3" x1="180" y1="340" x2="400" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00ffd2"/>
+      <stop offset=".5" stop-color="#00a3c8"/>
+      <stop offset="1" stop-color="#0070a3"/>
+    </linearGradient>
+    <linearGradient id="_名称未設定グラデーション_4" data-name="名称未設定グラデーション 4" x1="31806.3" y1="-44.44" x2="31586.3" y2="-44.44" gradientTransform="translate(32206.29 415.56) rotate(-180)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00dcc8"/>
+      <stop offset=".36" stop-color="#1ea3d0"/>
+      <stop offset="1" stop-color="#c8dcf0"/>
+    </linearGradient>
+    <symbol id="logo_mark" data-name="logo mark" viewBox="0 0 800 800">
+      <g>
+        <g>
+          <circle class="cls-5" cx="400" cy="400" r="400"/>
+          <g>
+            <path class="cls-1" d="m254.63,540h145.37V164.88c0-13.73-11.15-24.88-24.88-24.88h-170.24c-13.73,0-24.88,11.15-24.88,24.88v300.49c0,41.19,33.44,74.63,74.63,74.63h0Z"/>
+            <path class="cls-2" d="m426.13,660h167.73c14.43,0,26.13-11.7,26.13-26.13v-301.5c0-39.97-32.4-72.37-72.37-72.37h-147.63v373.87c0,14.43,11.7,26.13,26.13,26.13h.01Z"/>
+          </g>
+        </g>
+        <g>
+          <path class="cls-4" d="m254.63,540h145.37V164.88c0-13.73-11.15-24.88-24.88-24.88h-170.24c-13.73,0-24.88,11.15-24.88,24.88v300.49c0,41.19,33.44,74.63,74.63,74.63h0Z"/>
+          <path class="cls-3" d="m426.13,660h167.73c14.43,0,26.13-11.7,26.13-26.13v-301.5c0-39.97-32.4-72.37-72.37-72.37h-147.63v373.87c0,14.43,11.7,26.13,26.13,26.13h.01Z"/>
+        </g>
+      </g>
+    </symbol>
+  </defs>
+  <g id="bg">
+    <rect class="cls-5" width="400" height="400"/>
+  </g>
+  <g id="resource">
+    <use width="800" height="800" transform="translate(0 400) scale(.5 -.5)" xlink:href="#logo_mark"/>
+  </g>
+</svg>

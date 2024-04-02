@@ -1,0 +1,42 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    Helvetica Neue, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: black;
+  }
+}
+
+.assistant-message table {
+  border-collapse: collapse;
+}
+
+.assistant-message table th {
+  border: solid 1px #ccc;
+}
+
+.assistant-message table tr {
+  border: solid 1px #ccc;
+}
+
+.assistant-message table td {
+  border: solid 1px #ccc;
+}
+
+/* TODO: 暫定。Navbarの水平スクロールバーを非表示 */
+div.mantine-ScrollArea-root > div > div {
+  display: unset !important;
+}

@@ -1,0 +1,10 @@
+variable "env" {}
+variable "project_name" {}
+variable "resource_group_name" {}
+variable "location" {}
+variable "ass_location" {}
+variable "ass_plan" {}
+variable "tenant_id" {}
+variable "client_id" {}
+variable "client_secret" {}
+variable "subscription_id" {}

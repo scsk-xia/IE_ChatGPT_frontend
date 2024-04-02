@@ -1,0 +1,14 @@
+# 基本設定
+subscription_id      = ""
+project_name         = ""
+env                  = "dev"
+resource_group_name  = ""
+location             = "japaneast" # LOCATION
+ass_location         = "East Asia" # 東アジア圏の場合はEast Asiaとするが、別地域の場合は都度変更してください
+ass_plan             = "Standard" #基本的にはStandardとする。 参考:https://learn.microsoft.com/ja-jp/azure/static-web-apps/plans
+
+# Azureサービスプリンシパルの設定
+# [重要]サービスプリンシパルは管理者に問い合わせください
+tenant_id     = ""     # AZURE_TENANT_ID
+client_id     = ""     # AZURE_CLIENT_ID
+client_secret = ""     # AZURE_CLIENT_SECRET
