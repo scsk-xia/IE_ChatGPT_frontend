@@ -15,6 +15,7 @@ ChatGPT プロジェクトにおける情報検索パターンのフロントエ
 - pnpm > 8.6.0
   - pnpm --version
 
+
 ## 環境変数
 
 `.env.local.sample` をコピーして `.env.local` を作成し、以下の環境変数を設定してください。
