@@ -1,4 +1,4 @@
-resource_group_name  = "dev-iechatgpt"
-storage_account_name = "deviechatgpttfstate"
+resource_group_name  = "dev-scskshgai"
+storage_account_name = "devscskshgaitfstate"
 container_name       = "dev-state"
-key                  = "frontend.terraform.tfstate"
+key                  = "terraform.tfstate"

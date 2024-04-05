@@ -44,6 +44,7 @@ ChatGPT プロジェクトにおける情報検索パターンのフロントエ
 
 アプリケーションの構築手順については、開発環境と本番環境で大きな違いはないため
 [フロントエンドのデプロイ手順について](../envs/README.md)に記載する。
+
 また、バックエンドについては[こちら](https://github.com/InsightEdgeJP/chatgpt-qa-backend/blob/main/envs/README.md)を参考にすること。
 
 ## IP 制限の実施方法
