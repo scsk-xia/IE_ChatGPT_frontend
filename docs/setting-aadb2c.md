@@ -37,6 +37,16 @@ NEXT_PUBLIC_AZURE_KNOWN_AUTHORITY=<TENANT_NAME>.b2clogin.com
 NEXT_PUBLIC_AZURE_API_SCOPE=https://<TENANT_NAME>.onmicrosoft.com/<Azure AD B2C(API)のアプリケーションクライアントID>/user_impersonation
 ```
 
+## my config
+```
+NEXT_PUBLIC_API_BASE_URL=https://scskshgai-dev-web-app-api.azurewebsites.net/
+NEXT_PUBLIC_AZURE_TENANT_ID=c19c319a-2ffc-432c-ab0f-51749d55c145
+NEXT_PUBLIC_AZURE_APP_CLIENT_ID=0e0ee48d-a7fa-4d4f-8a5e-abfcc4cfe647
+NEXT_PUBLIC_AZURE_AUTHORITY=https://scskshgaiprj.b2clogin.com/scskshgaiprj.onmicrosoft.com/B2C_1_signin
+NEXT_PUBLIC_AZURE_KNOWN_AUTHORITY=scskshgaiprj.b2clogin.com
+NEXT_PUBLIC_AZURE_API_SCOPE=https://scskshgaiprj.onmicrosoft.com/4eedaab2-949f-4b88-8339-0c8dc94ca306/user_impersonation
+```
+
 ### 参考資料
 
 https://learn.microsoft.com/ja-jp/azure/active-directory-b2c/configure-authentication-in-azure-web-app

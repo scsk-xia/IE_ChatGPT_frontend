@@ -5,6 +5,7 @@ ChatGPT プロジェクトにおける情報検索パターンのフロントエ
 ## 前提条件
 
 本アプリは、以下の環境で開発を行うことを前提としています。
+- az login --tenant $TENANT_ID
 
 - Visual Studio Code
   - 以下の拡張機能を入れること。
@@ -32,7 +33,7 @@ ChatGPT プロジェクトにおける情報検索パターンのフロントエ
 | `NEXT_PUBLIC_COLOR_THEME`           | アプリ全体に適用されるカラーテーマ                                                                                                                          | `default`            |
 
 ## ローカル起動方法
-
+az login -tenant 
 1. 「環境変数」の章に沿って、.env.local ファイルを作成する。
 1. 以下を実行し、ライブラリをインストールする。
    - > pnpm install
