@@ -19,4 +19,5 @@ module "WebApps" {
   project_name        = var.project_name
   ass_location        = var.ass_location
   ass_plan            = var.ass_plan
+
 }

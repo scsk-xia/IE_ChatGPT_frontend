@@ -1,9 +1,11 @@
 /* eslint-disable complexity */
+
 import { useCallback, useEffect, useState } from "react";
 import { InteractionStatus, InteractionType } from "@azure/msal-browser";
 import { useMsal, useMsalAuthentication } from "@azure/msal-react";
 import { useDisclosure } from "@mantine/hooks";
 import camelcaseKeys from "camelcase-keys";
+
 import { FormHeader } from "~/components/features/form/FormHeader";
 import { FormInputFooter } from "~/components/features/form/FormInputFooter";
 import { BaseLayout } from "~/components/features/layout/BaseLayout";
@@ -58,13 +60,13 @@ export default function Home() {
     const fetchVectorstores = async () => {
       if (accounts.length > 0 && inProgress === InteractionStatus.None) {
         const response = await authAxios.get("/vectorstores");
-        if (response.status !== 200) {
+        if (response && response.status !== 200) {  //scsk revised
           setErrorModalOpened(true);
           setErrorModalMessage(response.data.detail?.error_id);
-        } else if (response.data.length <= 0) {
+        } else if (response && response.data && response.data.length <= 0) { // scsk revised
           setErrorModalOpened(true);
           setErrorModalMessage("vectorstore.not_found");
-        } else {
+        } else if (response && response.data){   //scsk revised
           setVectorstoresLoading(false);
           const tempVectorstores = camelcaseKeys(response.data, { deep: true });
           setVectorstores(tempVectorstores);
@@ -94,12 +96,12 @@ export default function Home() {
     const fetchTopMessage = async () => {
       if (accounts.length > 0 && inProgress === InteractionStatus.None) {
         const response = await authAxios.get("/notice");
-        if (response.status !== 200) {
+        if (response && response.data && response.data.detail && response.data.detail.error_id) {
           setErrorModalOpened(true);
-          setErrorModalMessage(response.data.detail?.error_id);
-        } else {
-          setNoticeMessage(response.data?.notice);
-        }
+          setErrorModalMessage(response.data.detail.error_id);
+        } else if (response && response.data.notice) {
+          setNoticeMessage(response.data.notice);
+        } 
       }
     };
 

@@ -12,3 +12,6 @@ az login
 
 # Deploy the project
 swa deploy ./out --env $ENV -n $APPLICATION -R $RESOURCE_GROUP
+
+az login --tenant $TENANT_ID
+# swa deploy ./out --env $ENV -n $StaticAPP -R $RG --no-use-keychain
