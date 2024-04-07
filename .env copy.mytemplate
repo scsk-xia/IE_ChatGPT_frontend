@@ -1,0 +1,17 @@
+# app service(api)
+NEXT_PUBLIC_API_BASE_URL=https://scskshgai-dev-web-app-api.azurewebsites.net/
+
+# AzureAD B2C
+NEXT_PUBLIC_AZURE_TENANT_ID=c19c319a-2ffc-432c-ab0f-51749d55c145
+
+## frontend
+NEXT_PUBLIC_AZURE_APP_CLIENT_ID=0e0ee48d-a7fa-4d4f-8a5e-abfcc4cfe647
+
+## auth api
+NEXT_PUBLIC_AZURE_AUTHORITY=https://scskshgaiprj.b2clogin.com/scskshgaiprj.onmicrosoft.com/B2C_1_signin
+NEXT_PUBLIC_AZURE_KNOWN_AUTHORITY=scskshgaiprj.b2clogin.com
+NEXT_PUBLIC_AZURE_API_SCOPE=https://scskshgaiprj.onmicrosoft.com/4eedaab2-949f-4b88-8339-0c8dc94ca306/user_impersonation
+
+# customize
+NEXT_PUBLIC_APP_TITLE=社則Dev
+NEXT_PUBLIC_COLOR_THEME=default
