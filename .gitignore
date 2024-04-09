@@ -9,7 +9,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
-
+.env_vars.sh
 # Icon must end with two \r
 Icon
 

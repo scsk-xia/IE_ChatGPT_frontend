@@ -74,6 +74,8 @@ Static Web Apps には Production 環境と Preview 環境があり、Production
 
 その後、以下のコマンドをプロジェクトのルートディレクトリで実行してください。
 `sh build.sh <プレビュー環境名> <StaticWebAppsのアプリケーション名> <リソースグループ名>`
+pnpm build
+az login
 
 本番環境へデプロイを行う場合は<プレビュー環境名>を`Production`としてください。
 
